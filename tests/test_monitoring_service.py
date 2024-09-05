@@ -8,7 +8,6 @@ class TestMonitoringService(unittest.TestCase):
         self.metrics = MagicMock()
         self.notifier = MagicMock()
         self.config_loader = MagicMock()
-        self.repository = MagicMock()
         self.validator = MagicMock()
         self.fetcher = MagicMock()
 
@@ -27,7 +26,6 @@ class TestMonitoringService(unittest.TestCase):
             metrics=self.metrics,
             notifier=self.notifier,
             config_loader=self.config_loader,
-            repository=self.repository,
             validator=self.validator,
             fetcher=self.fetcher
         )
