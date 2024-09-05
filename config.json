@@ -7,7 +7,8 @@
             "expected_payload": {
                 "key1": "value1",
                 "key2": "value3"
-            }
+            },
+            "check_interval": 10
         },
         {
             "route": "http://localhost:5000/test",
@@ -16,7 +17,8 @@
             "expected_payload": {
                 "field1": "expected_value1",
                 "field2": "expected_value2"
-            }
+            },
+            "check_interval": 5
         }
     ]
 }

@@ -1,3 +1,6 @@
+import time
+
+
 class MonitoringService:
     def __init__(self, metrics, notifier, config_loader, repository, validator):
         self.metrics = metrics
@@ -6,10 +9,12 @@ class MonitoringService:
         self.repository = repository
         self.validator = validator
 
-    def monitor_routes(self):
+    def monitor_routes_continuously(self):
         routes = self.config["routes"]
-        for route_config in routes:
-            self.monitor_single_route(route_config)
+        while True:
+            for route_config in routes:
+                self.monitor_single_route(route_config)
+                time.sleep(route_config.get("check_interval", 60))
 
     def monitor_single_route(self, route_config):
         route = route_config["route"]

@@ -13,4 +13,4 @@ repository = MonitoringRepository()
 validator = PayloadValidation()
 
 service = MonitoringService(metrics, notifier, config_loader, repository, validator)
-service.monitor_routes()
+service.monitor_routes_continuously()
