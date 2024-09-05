@@ -5,7 +5,6 @@ from domain.models.validation import PayloadValidation
 from infrastructure.metrics.prometheus_metrics import PrometheusMetrics
 from infrastructure.notifiers.email_notifier import EmailNotifier
 
-
 metrics = PrometheusMetrics()
 notifier = EmailNotifier()
 config_loader = ConfigLoader()
