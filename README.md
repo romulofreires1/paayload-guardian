@@ -45,6 +45,12 @@ Isso executará o monitoramento contínuo de payloads conforme definido no arqui
 
 O projeto utiliza ferramentas como **Flake8** e **Pylint** para garantir a qualidade do código. Para executar as verificações de qualidade, utilize os seguintes comandos:
 
+#### Testing
+
+```bash
+make test
+```
+
 #### Linting (Flake8 e Pylint)
 
 ```bash
