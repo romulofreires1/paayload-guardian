@@ -1,16 +1,20 @@
-from application.repositories.monitoring_repository import MonitoringRepository
-from config.config_loader import ConfigLoader
-from domain.models.validation import PayloadValidation
-from infrastructure.metrics.prometheus_metrics import PrometheusMetrics
-from infrastructure.notifiers.email_notifier import EmailNotifier
-
-
 class MonitoringService:
-    def __init__(self):
-        self.metrics = PrometheusMetrics()
-        self.notifier = EmailNotifier()
-        self.config = ConfigLoader.load_config("config.json")
-        self.repository = MonitoringRepository()
+    def __init__(self, metrics, notifier, config_loader, repository, validator):
+        """
+        Inicializa o serviço de monitoramento com dependências injetadas.
+
+        Args:
+            metrics: Um objeto para lidar com métricas (ex: PrometheusMetrics).
+            notifier: Um objeto para enviar notificações (ex: EmailNotifier).
+            config_loader: Um objeto para carregar a configuração (ex: ConfigLoader).
+            repository: Um objeto para buscar os dados (ex: MonitoringRepository).
+            validator: Um objeto para validar o payload (ex: PayloadValidation).
+        """
+        self.metrics = metrics
+        self.notifier = notifier
+        self.config = config_loader.load_config("config.json")
+        self.repository = repository
+        self.validator = validator
 
     def monitor_routes(self):
         for route_config in self.config["routes"]:
@@ -22,17 +26,10 @@ class MonitoringService:
                 print(f"Failed to fetch payload from {route}")
                 continue
 
-            if not PayloadValidation.validate_identical(
-                expected_payload, actual_payload
-            ):
+            if not self.validator.validate_identical(expected_payload, actual_payload):
                 # self.metrics.increment_failure_metric(route)
                 self.notifier.notify(
                     route_config["team"], f"Payload mismatch detected for {route}"
                 )
             else:
                 print(f"Payloads for {route} match successfully.")
-
-
-if __name__ == "__main__":
-    service = MonitoringService()
-    service.monitor_routes()
