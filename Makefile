@@ -47,5 +47,9 @@ pre-commit-run:
 
 run:
 	@echo "Executando a aplicação PayloadGuardian..."
-	PYTHONPATH=src pipenv run python src/__init__.py
+	PYTHONPATH=src pipenv run python main.py
+
+test:
+	@echo "Executando testes..."
+	pipenv run python -m unittest discover -s tests
 

@@ -2,12 +2,13 @@ import time
 
 
 class MonitoringService:
-    def __init__(self, metrics, notifier, config_loader, repository, validator):
+    def __init__(self, metrics, notifier, config_loader, repository, validator, fetcher):
         self.metrics = metrics
         self.notifier = notifier
         self.config = config_loader.load_config("config.json")
         self.repository = repository
         self.validator = validator
+        self.fetcher = fetcher
 
     def monitor_routes_continuously(self):
         routes = self.config["routes"]
@@ -19,7 +20,7 @@ class MonitoringService:
     def monitor_single_route(self, route_config):
         route = route_config["route"]
         expected_payload = route_config["expected_payload"]
-        actual_payload = self.fetch_payload(route)
+        actual_payload = self.fetcher.fetch(route)
 
         if actual_payload is None:
             self.handle_payload_fetch_failure(route)
@@ -29,9 +30,6 @@ class MonitoringService:
             self.handle_payload_mismatch(route, route_config["team"])
         else:
             self.handle_payload_success(route)
-
-    def fetch_payload(self, route):
-        return self.repository.fetch_actual_payload(route)
 
     def handle_payload_fetch_failure(self, route):
         print(f"Failed to fetch payload from {route}")
