@@ -1,0 +1,22 @@
+{
+    "routes": [
+        {
+            "route": "http://localhost:5000/test",
+            "team": "team@example.com",
+            "validation": "identical",
+            "expected_payload": {
+                "key1": "value1",
+                "key2": "value3"
+            }
+        },
+        {
+            "route": "http://localhost:5000/test",
+            "team": "another-team@example.com",
+            "validation": "identical",
+            "expected_payload": {
+                "field1": "expected_value1",
+                "field2": "expected_value2"
+            }
+        }
+    ]
+}
