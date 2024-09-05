@@ -47,5 +47,5 @@ pre-commit-run:
 
 run:
 	@echo "Executando a aplicação PayloadGuardian..."
-	PYTHONPATH=src pipenv run python src/application/services/monitoring_service.py
+	PYTHONPATH=src pipenv run python src/__init__.py
 
