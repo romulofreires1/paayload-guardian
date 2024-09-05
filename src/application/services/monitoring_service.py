@@ -2,7 +2,9 @@ import time
 
 
 class MonitoringService:
-    def __init__(self, metrics, notifier, config_loader, repository, validator, fetcher):
+    def __init__(
+        self, metrics, notifier, config_loader, repository, validator, fetcher
+    ):
         self.metrics = metrics
         self.notifier = notifier
         self.config = config_loader.load_config("config.json")

@@ -1,5 +1,6 @@
 import requests
 
+
 class HttpFetcher:
     def fetch(self, route):
         try:
