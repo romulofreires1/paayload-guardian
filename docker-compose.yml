@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  payload-guardian:
+    build: .
+    container_name: payload_guardian
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: pipenv run python main.py
+    depends_on:
+      - mock-api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mock-api:5000/__admin"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - backend
+
+  mock-api:
+    image: wiremock/wiremock
+    container_name: mock_api_service
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

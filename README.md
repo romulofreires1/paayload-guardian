@@ -20,6 +20,8 @@
 - **Prometheus-client**: Biblioteca para integração com Prometheus para registro de métricas.
 - **Pipenv**: Usado para gerenciar dependências e ambiente virtual.
 - **Arquitetura Hexagonal** e **Clean Code**: Aplicação de boas práticas para garantir um código limpo, de fácil manutenção e extensível.
+- **Docker** e **Docker Compose**: Para rodar o ambiente de forma isolada e reprodutível, incluindo serviços mock.
+- **WireMock**: Ferramenta utilizada para mockar APIs.
 
 ## Comandos
 
@@ -31,15 +33,35 @@ Para instalar as dependências do projeto, utilize o seguinte comando:
 pipenv install --dev
 ```
 
-### Executar o serviço
+### Executar o serviço com Docker
 
-Para rodar o serviço **PayloadGuardian**, execute o comando abaixo:
+Para rodar o serviço **PayloadGuardian** com Docker, execute o seguinte comando:
 
 ```bash
-make run
+make docker-up
 ```
 
-Isso executará o monitoramento contínuo de payloads conforme definido no arquivo de configuração.
+Isso irá iniciar o serviço **PayloadGuardian** junto com o serviço **WireMock** que mocka as APIs. Para garantir que as imagens Docker estão atualizadas, use:
+
+```bash
+make docker-build
+```
+
+### Subir apenas o mock-api
+
+Caso precise apenas do **mock-api** (WireMock), você pode usar o seguinte comando:
+
+```bash
+docker-compose up mock-api -d
+```
+
+### Parar e remover containers
+
+Para parar e remover os containers:
+
+```bash
+make docker-down
+```
 
 ### Verificar a qualidade do código
 
@@ -85,13 +107,15 @@ make pre-commit-run
 
 As configurações para monitoramento de rotas, equipes responsáveis e tipos de validação são definidas em um arquivo JSON (`config.json`). Este arquivo deve ser configurado conforme necessário para atender às necessidades específicas do seu ambiente.
 
-Exemplo de `config.json`:
+### Alterações no arquivo de configuração para rodar com Docker
+
+Quando for rodar o serviço no Docker, os endpoints nas rotas do `config.json` devem ser alterados para o nome do serviço **mock-api**. Exemplo:
 
 ```json
 {
     "routes": [
         {
-            "route": "http://example.com/api/data",
+            "route": "http://mock-api:5000/test",
             "team": "team@example.com",
             "validation": "identical",
             "expected_payload": {
@@ -102,6 +126,38 @@ Exemplo de `config.json`:
         }
     ]
 }
+```
+
+### Adicionar Endpoints de Testes no WireMock
+
+O serviço **WireMock** mocka as APIs utilizadas no **PayloadGuardian**. Para adicionar novos endpoints de teste, você pode criar arquivos JSON de mapeamento na pasta `wiremock/mappings/`.
+
+Exemplo de arquivo `wiremock/mappings/test-mock.json` para mockar o endpoint `/test`:
+
+```json
+{
+  "request": {
+    "method": "GET",
+    "url": "/test"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
+```
+
+Após adicionar ou alterar endpoints no WireMock, você pode reiniciar o serviço mock com:
+
+```bash
+make docker-down
+make docker-up
 ```
 
 ## Contribuição

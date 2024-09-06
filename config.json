@@ -1,7 +1,7 @@
 {
     "routes": [
         {
-            "route": "http://localhost:5000/test",
+            "route": "http://localhost:8080/test",
             "team": "team@example.com",
             "validation": "identical",
             "expected_payload": {
@@ -11,7 +11,7 @@
             "check_interval": 10
         },
         {
-            "route": "http://localhost:5000/test",
+            "route": "http://localhost:8080/test",
             "team": "another-team@example.com",
             "validation": "identical",
             "expected_payload": {
