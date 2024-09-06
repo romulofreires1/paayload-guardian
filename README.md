@@ -3,7 +3,7 @@
 
 ## Descrição
 
-**PayloadGuardian** é um serviço Python projetado para monitorar periodicamente os payloads de diferentes rotas configuradas. O objetivo é garantir que os payloads recebidos de outras APIs ou serviços sejam idênticos aos esperados. Em caso de discrepâncias, o serviço registra uma métrica de falha no Prometheus e envia uma notificação por email ao time responsável. O design do sistema é extensível, permitindo adicionar novas validações e tipos de notificações facilmente no futuro.
+**PayloadGuardian** é um serviço Python projetado para monitorar periodicamente os payloads de diferentes rotas configuradas. O objetivo é garantir que os payloads recebidos de outras APIs ou serviços mantenham um padrão esperado. Em caso de discrepâncias, o serviço registra uma métrica de falha no Prometheus e envia uma notificação ao time responsável. O design do sistema é extensível, permitindo adicionar novas validações e tipos de notificações facilmente no futuro.
 
 ## Funcionalidades
 
